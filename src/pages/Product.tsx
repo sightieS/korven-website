@@ -77,6 +77,7 @@ const products = {
       },
     ],
   },
+
   textura: {
     name: "Textura",
     category: "Productivity",
@@ -149,6 +150,10 @@ export default function Product() {
   const [releaseLoading, setReleaseLoading] = useState(false);
   const [releaseError, setReleaseError] = useState(false);
 
+  const [activeScreenshot, setActiveScreenshot] = useState<
+    "home" | "editor"
+  >("home");
+
   useEffect(() => {
     if (slug !== "zapture") return;
 
@@ -216,6 +221,7 @@ export default function Product() {
           description="The application you're looking for could not be found. Explore the Korven collection to discover our software."
           path={`/apps/${slug ?? ""}`}
         />
+
         <main className="product-not-found">
           <span>404 / APPLICATION NOT FOUND</span>
           <h1>We couldn't find that application.</h1>
@@ -323,61 +329,128 @@ export default function Product() {
             )}
           </motion.div>
 
-          <motion.div
-            className="product-preview"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="product-preview-window">
-              <div className="preview-titlebar">
-                <div className="preview-brand">
-                  <span className="preview-brand-icon">
-                    {product.initials}
-                  </span>
-                  {product.name}
-                </div>
-
-                <div className="preview-window-controls">
-                  <span />
-                  <span />
-                  <span />
-                </div>
+          {isZapture ? (
+            <motion.div
+              className="zapture-gallery"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <div className="zapture-gallery-image">
+                <motion.img
+                  key={activeScreenshot}
+                  src={
+                    activeScreenshot === "home"
+                      ? "/zapture/home.png"
+                      : "/zapture/editor.png"
+                  }
+                  alt={
+                    activeScreenshot === "home"
+                      ? "Zapture main application"
+                      : "Zapture screenshot editor"
+                  }
+                  initial={{ opacity: 0, scale: 0.985 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35 }}
+                />
               </div>
 
-              <div className="preview-body">
-                <div className="preview-sidebar">
-                  <div className="preview-sidebar-item active" />
-                  <div className="preview-sidebar-item" />
-                  <div className="preview-sidebar-item" />
-                  <div className="preview-sidebar-item" />
+              <div className="zapture-gallery-controls">
+                <div className="zapture-gallery-label">
+                  <span>EXPLORE ZAPTURE</span>
+                  <p>
+                    {activeScreenshot === "home"
+                      ? "The Zapture home interface"
+                      : "The screenshot editing experience"}
+                  </p>
                 </div>
 
-                <div className="preview-main">
-                  <div className="preview-heading-line" />
-                  <div className="preview-subheading-line" />
+                <div className="zapture-gallery-thumbnails">
+                  <button
+                    type="button"
+                    className={`zapture-thumbnail ${
+                      activeScreenshot === "home" ? "active" : ""
+                    }`}
+                    onClick={() => setActiveScreenshot("home")}
+                    aria-label="View Zapture home screenshot"
+                    aria-pressed={activeScreenshot === "home"}
+                  >
+                    <img src="/zapture/home.png" alt="" />
+                    <span>Home</span>
+                  </button>
 
-                  <div className="preview-feature-card">
-                    <Sparkles size={24} />
-                    <div className="preview-feature-lines">
-                      <span />
-                      <span />
+                  <button
+                    type="button"
+                    className={`zapture-thumbnail ${
+                      activeScreenshot === "editor" ? "active" : ""
+                    }`}
+                    onClick={() => setActiveScreenshot("editor")}
+                    aria-label="View Zapture screenshot editor"
+                    aria-pressed={activeScreenshot === "editor"}
+                  >
+                    <img src="/zapture/editor.png" alt="" />
+                    <span>Editor</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              className="product-preview"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="product-preview-window">
+                <div className="preview-titlebar">
+                  <div className="preview-brand">
+                    <span className="preview-brand-icon">
+                      {product.initials}
+                    </span>
+                    {product.name}
+                  </div>
+
+                  <div className="preview-window-controls">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+
+                <div className="preview-body">
+                  <div className="preview-sidebar">
+                    <div className="preview-sidebar-item active" />
+                    <div className="preview-sidebar-item" />
+                    <div className="preview-sidebar-item" />
+                    <div className="preview-sidebar-item" />
+                  </div>
+
+                  <div className="preview-main">
+                    <div className="preview-heading-line" />
+                    <div className="preview-subheading-line" />
+
+                    <div className="preview-feature-card">
+                      <Sparkles size={24} />
+                      <div className="preview-feature-lines">
+                        <span />
+                        <span />
+                      </div>
+                    </div>
+
+                    <div className="preview-bottom-cards">
+                      <div />
+                      <div />
                     </div>
                   </div>
+                </div>
 
-                  <div className="preview-bottom-cards">
-                    <div />
-                    <div />
-                  </div>
+                <div className="preview-overlay">
+                  <Sparkles size={17} />
+                  <span>Product preview</span>
                 </div>
               </div>
-
-              <div className="preview-overlay">
-                <Sparkles size={17} />
-                <span>Product preview</span>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </section>
 
         <section className="product-overview">
@@ -506,9 +579,7 @@ export default function Product() {
                 <span>{productStatus}</span>
 
                 <small>
-                  {release
-                    ? release.fileName
-                    : "Release information"}
+                  {release ? release.fileName : "Release information"}
                 </small>
               </div>
             </div>
