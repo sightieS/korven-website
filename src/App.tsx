@@ -14,6 +14,7 @@ const Apps = lazy(() => import("./pages/Apps"));
 const Product = lazy(() => import("./pages/Product"));
 const About = lazy(() => import("./pages/About"));
 const Support = lazy(() => import("./pages/Support"));
+const Legal = lazy(() => import("./pages/Legal"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageLoader() {
@@ -63,6 +64,11 @@ export default function App() {
                 <Route path="/apps/:slug" element={<Product />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/support" element={<Support />} />
+
+                <Route path="/privacy" element={<Legal />} />
+                <Route path="/terms" element={<Legal />} />
+                <Route path="/eula" element={<Legal />} />
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

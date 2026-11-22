@@ -42,6 +42,13 @@ export default function Footer() {
         </div>
 
         <div className="footer-column">
+          <h3>Legal</h3>
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/terms">Terms of Use</Link>
+          <Link to="/eula">End User Licence Agreement</Link>
+        </div>
+
+        <div className="footer-column">
           <h3>Company</h3>
           <span>Independent software</span>
           <span>Made with purpose</span>
