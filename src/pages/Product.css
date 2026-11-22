@@ -809,3 +809,109 @@
     transition: none;
   }
 }
+
+
+/* Korven premium download button */
+
+.product-download-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 54px;
+  padding: 0 23px 0 17px;
+  overflow: hidden;
+
+  border: 1px solid rgba(150, 135, 255, 0.32);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(125, 108, 235, 0.19),
+      rgba(91, 75, 180, 0.08)
+    ),
+    #17151f;
+
+  color: #f5f3ff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+  text-decoration: none;
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  transition:
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.product-download-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.055) 50%,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.product-download-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(165, 150, 255, 0.65);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(125, 108, 235, 0.28),
+      rgba(91, 75, 180, 0.14)
+    ),
+    #1c1928;
+
+  box-shadow:
+    0 8px 26px rgba(100, 80, 210, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  cursor: pointer;
+}
+
+.product-download-button:hover::before {
+  opacity: 1;
+}
+
+.product-download-button:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.product-download-button svg {
+  position: relative;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  color: #b5aaff;
+  flex-shrink: 0;
+}
+
+.product-download-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-download-button,
+  .product-download-button::before {
+    transition: none;
+  }
+}

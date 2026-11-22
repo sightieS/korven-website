@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -6,13 +7,39 @@ import {
   ArrowUpRight,
   Check,
   Clock3,
+  Download,
+  FileText,
   Monitor,
   ShieldCheck,
   Sparkles,
+  RefreshCw,
 } from "lucide-react";
 
 import SEO from "../components/SEO";
 import "./Product.css";
+
+interface GitHubRelease {
+  tag_name: string;
+  name: string;
+  published_at: string;
+  body: string;
+  html_url: string;
+  assets: {
+    name: string;
+    size: number;
+    browser_download_url: string;
+  }[];
+}
+
+interface ZaptureRelease {
+  version: string;
+  date: string;
+  notes: string;
+  downloadUrl: string;
+  fileName: string;
+  fileSize: number;
+  releaseUrl: string;
+}
 
 const products = {
   zapture: {
@@ -50,7 +77,6 @@ const products = {
       },
     ],
   },
-
   textura: {
     name: "Textura",
     category: "Productivity",
@@ -71,8 +97,7 @@ const products = {
       },
       {
         title: "Smart organisation",
-        description:
-          "Keep your notes organised and easy to navigate.",
+        description: "Keep your notes organised and easy to navigate.",
       },
       {
         title: "Personalisation",
@@ -90,6 +115,28 @@ const products = {
 
 type ProductSlug = keyof typeof products;
 
+const GITHUB_RELEASE_API =
+  "https://api.github.com/repos/sightieS/zapture-updates/releases/latest";
+
+const GITHUB_RELEASES_URL =
+  "https://github.com/sightieS/zapture-updates/releases";
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function formatReleaseDate(date: string) {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export default function Product() {
   const { slug } = useParams<{ slug: string }>();
 
@@ -97,6 +144,69 @@ export default function Product() {
     slug && Object.prototype.hasOwnProperty.call(products, slug)
       ? products[slug as ProductSlug]
       : null;
+
+  const [release, setRelease] = useState<ZaptureRelease | null>(null);
+  const [releaseLoading, setReleaseLoading] = useState(false);
+  const [releaseError, setReleaseError] = useState(false);
+
+  useEffect(() => {
+    if (slug !== "zapture") return;
+
+    const controller = new AbortController();
+
+    async function fetchRelease() {
+      setReleaseLoading(true);
+      setReleaseError(false);
+
+      try {
+        const response = await fetch(GITHUB_RELEASE_API, {
+          signal: controller.signal,
+          headers: {
+            Accept: "application/vnd.github+json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to retrieve the latest release.");
+        }
+
+        const data: GitHubRelease = await response.json();
+
+        const installer = data.assets.find((asset) =>
+          asset.name.toLowerCase().endsWith(".exe")
+        );
+
+        if (!installer) {
+          throw new Error("No Windows installer was found.");
+        }
+
+        setRelease({
+          version: data.tag_name || data.name,
+          date: data.published_at,
+          notes: data.body || "No release notes were provided.",
+          downloadUrl: installer.browser_download_url,
+          fileName: installer.name,
+          fileSize: installer.size,
+          releaseUrl: data.html_url,
+        });
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+
+        console.error("Zapture release error:", error);
+        setReleaseError(true);
+      } finally {
+        if (!controller.signal.aborted) {
+          setReleaseLoading(false);
+        }
+      }
+    }
+
+    fetchRelease();
+
+    return () => controller.abort();
+  }, [slug]);
 
   if (!product) {
     return (
@@ -106,7 +216,6 @@ export default function Product() {
           description="The application you're looking for could not be found. Explore the Korven collection to discover our software."
           path={`/apps/${slug ?? ""}`}
         />
-
         <main className="product-not-found">
           <span>404 / APPLICATION NOT FOUND</span>
           <h1>We couldn't find that application.</h1>
@@ -118,6 +227,9 @@ export default function Product() {
       </>
     );
   }
+
+  const isZapture = slug === "zapture";
+  const productStatus = isZapture && release ? "Available" : product.status;
 
   return (
     <>
@@ -148,37 +260,67 @@ export default function Product() {
               </div>
 
               <div>
-                <div className="product-category">
-                  {product.category}
-                </div>
+                <div className="product-category">{product.category}</div>
                 <h1>{product.name}</h1>
               </div>
             </div>
 
             <div className="product-status">
               <span className="product-status-dot" />
-              {product.status}
+              {productStatus}
             </div>
 
-            <p className="product-description">
-              {product.description}
-            </p>
+            <p className="product-description">{product.description}</p>
 
             <div className="product-actions">
-              <button
-                className="product-download-button"
-                type="button"
-                disabled
-              >
-                <Clock3 size={17} />
-                Not available yet
-              </button>
+              {isZapture && release ? (
+                <a
+                  className="product-download-button"
+                  href={release.downloadUrl}
+                  aria-label={`Download Zapture ${release.version} for Windows`}
+                  title={`Download ${release.fileName}`}
+                >
+                  <Download size={17} />
+                  Download for Windows
+                </a>
+              ) : (
+                <button
+                  className="product-download-button"
+                  type="button"
+                  disabled
+                >
+                  {isZapture && releaseLoading ? (
+                    <>
+                      <RefreshCw size={17} />
+                      Checking release...
+                    </>
+                  ) : (
+                    <>
+                      <Clock3 size={17} />
+                      {isZapture && releaseError
+                        ? "Download unavailable"
+                        : "Not available yet"}
+                    </>
+                  )}
+                </button>
+              )}
 
               <span className="product-platform">
                 <Monitor size={15} />
                 Windows
               </span>
             </div>
+
+            {isZapture && (
+              <a
+                className="product-release-history-link"
+                href={GITHUB_RELEASES_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View all releases <ArrowUpRight size={14} />
+              </a>
+            )}
           </motion.div>
 
           <motion.div
@@ -240,9 +382,7 @@ export default function Product() {
 
         <section className="product-overview">
           <div className="product-overview-copy">
-            <span className="section-eyebrow">
-              ABOUT THE APPLICATION
-            </span>
+            <span className="section-eyebrow">ABOUT THE APPLICATION</span>
             <h2>
               Designed with
               <br />
@@ -263,13 +403,9 @@ export default function Product() {
 
         <section className="product-features">
           <div className="product-section-heading">
-            <span className="section-eyebrow">
-              WHAT TO EXPECT
-            </span>
+            <span className="section-eyebrow">WHAT TO EXPECT</span>
             <h2>Made to do more.</h2>
-            <p>
-              Explore the features planned for this application.
-            </p>
+            <p>Explore the features planned for this application.</p>
           </div>
 
           <div className="product-feature-grid">
@@ -280,15 +416,11 @@ export default function Product() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
-                }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="product-feature-check">
                   <Check size={17} />
                 </div>
-
                 <h3>{feature.title}</h3>
                 <p>{feature.description}</p>
               </motion.div>
@@ -296,31 +428,126 @@ export default function Product() {
           </div>
         </section>
 
-        <section className="product-release">
-          <div className="product-release-inner">
-            <div>
-              <span className="section-eyebrow">
-                RELEASE INFORMATION
-              </span>
-              <h2>Coming when it's ready.</h2>
-              <p>
-                We're taking the time to build this application properly.
-                We'll share release information here when it's available.
-              </p>
+        {isZapture ? (
+          <section className="product-release">
+            <div className="product-release-inner">
+              <div>
+                <span className="section-eyebrow">RELEASE INFORMATION</span>
+
+                <h2>
+                  {release
+                    ? "Ready when you are."
+                    : releaseLoading
+                      ? "Checking for releases."
+                      : "Zapture releases."}
+                </h2>
+
+                <p>
+                  {release
+                    ? "Download the latest version of Zapture for Windows."
+                    : releaseLoading
+                      ? "We're retrieving the latest version information from GitHub."
+                      : releaseError
+                        ? "We couldn't retrieve the latest release information. You can still visit the release history on GitHub."
+                        : "The latest release information will appear here when available."}
+                </p>
+
+                {release && (
+                  <div className="zapture-release-details">
+                    <div>
+                      <span>VERSION</span>
+                      <strong>{release.version}</strong>
+                    </div>
+
+                    <div>
+                      <span>RELEASED</span>
+                      <strong>{formatReleaseDate(release.date)}</strong>
+                    </div>
+
+                    <div>
+                      <span>INSTALLER</span>
+                      <strong>{formatFileSize(release.fileSize)}</strong>
+                    </div>
+                  </div>
+                )}
+
+                {release && (
+                  <a
+                    className="zapture-release-link"
+                    href={release.releaseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View release on GitHub <ArrowUpRight size={15} />
+                  </a>
+                )}
+
+                {releaseError && (
+                  <a
+                    className="zapture-release-link"
+                    href={GITHUB_RELEASES_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View GitHub releases <ArrowUpRight size={15} />
+                  </a>
+                )}
+              </div>
+
+              <div className="product-release-status">
+                {release ? (
+                  <Download size={20} />
+                ) : releaseLoading ? (
+                  <RefreshCw size={20} />
+                ) : (
+                  <Clock3 size={20} />
+                )}
+
+                <span>{productStatus}</span>
+
+                <small>
+                  {release
+                    ? release.fileName
+                    : "Release information"}
+                </small>
+              </div>
             </div>
 
-            <div className="product-release-status">
-              <Clock3 size={20} />
-              <span>{product.status}</span>
-              <small>Release date not announced</small>
+            {release && (
+              <div className="zapture-release-notes">
+                <div className="zapture-release-notes-heading">
+                  <FileText size={18} />
+                  <h3>What's new</h3>
+                </div>
+
+                <pre>{release.notes}</pre>
+              </div>
+            )}
+          </section>
+        ) : (
+          <section className="product-release">
+            <div className="product-release-inner">
+              <div>
+                <span className="section-eyebrow">RELEASE INFORMATION</span>
+                <h2>Coming when it's ready.</h2>
+                <p>
+                  We're taking the time to build this application properly.
+                  We'll share release information here when it's available.
+                </p>
+              </div>
+
+              <div className="product-release-status">
+                <Clock3 size={20} />
+                <span>{product.status}</span>
+                <small>Release date not announced</small>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <div className="product-bottom-link">
           <Link to="/apps">
-            Explore other applications
-            <ArrowUpRight size={16} />
+            Explore other applications <ArrowUpRight size={16} />
           </Link>
         </div>
       </main>
