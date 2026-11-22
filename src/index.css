@@ -1,0 +1,150 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  font-family: "Inter", sans-serif;
+  color: #f5f3fa;
+  background: #0b0b10;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+
+  --korven-purple: #8b78e8;
+  --korven-purple-light: #b8a9ff;
+  --korven-background: #0b0b10;
+  --korven-surface: #14131b;
+  --korven-text: #f5f3fa;
+  --korven-muted: #92909e;
+
+  --page-width: 1200px;
+  --page-padding: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+  overflow-x: hidden;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--korven-background);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Inter", sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: clip;
+}
+
+::selection {
+  color: white;
+  background: rgba(139, 120, 232, 0.45);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0b10;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid #0b0b10;
+  border-radius: 20px;
+  background: #393344;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7465bd;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  :root {
+    --page-padding: 28px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  :root {
+    --page-padding: 20px;
+  }
+
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  :root {
+    --page-padding: 16px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

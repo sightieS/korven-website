@@ -1,0 +1,285 @@
+
+.apps-page {
+  width: 100%;
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.apps-hero {
+  position: relative;
+  min-height: 490px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 8% 75px;
+  overflow: hidden;
+  text-align: center;
+  background: #0b0b10;
+}
+
+.apps-hero-glow {
+  position: absolute;
+  top: -230px;
+  left: 50%;
+  width: min(650px, 100vw);
+  height: 500px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(125, 101, 220, 0.13);
+  filter: blur(110px);
+  pointer-events: none;
+}
+
+.apps-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+}
+
+.apps-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #b1a1ff;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 2px;
+}
+
+.apps-hero h1 {
+  margin: 25px 0 18px;
+  color: #f7f6fb;
+  font-size: clamp(48px, 6vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -4px;
+  overflow-wrap: break-word;
+}
+
+.apps-hero h1 span {
+  background: linear-gradient(110deg, #b8a9ff, #8974e5, #c0a0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.apps-hero-content > p {
+  max-width: 500px;
+  margin: 0 auto;
+  color: #9996a5;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.apps-hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+  color: #777482;
+  font-size: 10px;
+}
+
+.apps-meta-divider {
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #8e7be3;
+}
+
+.apps-catalog {
+  width: min(1120px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 75px 0 40px;
+}
+
+.apps-catalog-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+.apps-catalog-heading h2 {
+  margin: 13px 0 8px;
+  color: #f5f3fa;
+  font-size: 31px;
+  letter-spacing: -1.2px;
+}
+
+.apps-catalog-heading p {
+  margin: 0;
+  color: #898795;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.apps-count {
+  flex-shrink: 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #aaa5b8;
+  font-size: 9px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.apps-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.apps-coming-note {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 35px;
+  padding: 23px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.apps-coming-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #b2a3ff;
+  background: rgba(143, 119, 230, 0.1);
+}
+
+.apps-coming-note > div {
+  min-width: 0;
+}
+
+.apps-coming-note h3 {
+  margin: 0 0 6px;
+  color: #e9e6f1;
+  font-size: 13px;
+}
+
+.apps-coming-note p {
+  margin: 0;
+  color: #858291;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.apps-coming-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: #8273c8;
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  .apps-catalog {
+    width: calc(100% - 56px);
+  }
+
+  .apps-catalog-grid {
+    gap: 16px;
+  }
+}
+
+/* Phones */
+@media (max-width: 760px) {
+  .apps-hero {
+    min-height: auto;
+    padding: 135px 22px 55px;
+  }
+
+  .apps-hero h1 {
+    margin: 22px 0 16px;
+    font-size: clamp(40px, 10vw, 54px);
+    letter-spacing: -2.5px;
+  }
+
+  .apps-hero-content > p {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .apps-hero-meta {
+    gap: 10px;
+    margin-top: 23px;
+    font-size: 9px;
+  }
+
+  .apps-catalog {
+    width: calc(100% - 40px);
+    padding-top: 55px;
+    padding-bottom: 35px;
+  }
+
+  .apps-catalog-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .apps-catalog-heading h2 {
+    font-size: 27px;
+  }
+
+  .apps-catalog-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .apps-coming-note {
+    gap: 13px;
+    margin-top: 25px;
+    padding: 18px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .apps-hero {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .apps-hero h1 {
+    font-size: 40px;
+    letter-spacing: -2px;
+  }
+
+  .apps-hero-meta {
+    gap: 8px;
+    font-size: 8px;
+  }
+
+  .apps-catalog {
+    width: calc(100% - 32px);
+  }
+
+  .apps-coming-note {
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .apps-coming-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .apps-page * {
+    scroll-behavior: auto;
+  }
+}
