@@ -1,119 +1,63 @@
+import { Link } from "react-router-dom";
+import { Mail, Sparkles } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
-
-import AppCard, { type AppInfo } from "../components/AppCard";
 import SEO from "../components/SEO";
-import "./Apps.css";
-
-const applications: AppInfo[] = [
-  {
-    name: "Zapture",
-    slug: "zapture",
-    description:
-      "A powerful, modern screenshot and screen recording tool designed to make capturing your screen effortless.",
-    category: "Productivity",
-    status: "In development",
-    initials: "Z",
-  },
-  {
-    name: "Textura",
-    slug: "textura",
-    description:
-      "A beautifully simple notes application designed to keep your thoughts organised and accessible.",
-    category: "Productivity",
-    status: "Coming soon",
-    initials: "T",
-  },
-];
+import AppCard from "../components/AppCard";
+import Reveal from "../components/Reveal";
+import { apps } from "../data/apps";
 
 export default function Apps() {
   return (
     <>
       <SEO
-        title="Our Apps"
-        description="Explore the Korven collection of thoughtfully designed Windows software. Discover Zapture, our screenshot and screen recording app, and Textura, our upcoming notes application."
+        title="Apps"
+        description="Explore Korven's Windows apps: Zapture for screenshots, screen recording and instant clips, and Textura, an upcoming notes app."
         path="/apps"
       />
 
-      <main className="apps-page">
-        <section className="apps-hero">
-          <div className="apps-hero-glow" />
-
-          <motion.div
-            className="apps-hero-content"
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="apps-eyebrow">
-              <Sparkles size={13} />
-              THE KORVEN COLLECTION
-            </div>
-
-            <h1>
-              Tools for a
-              <br />
-              <span>better experience.</span>
+      <section className="page-hero">
+        <div className="grid-bg" />
+        <div className="glow" />
+        <div className="container">
+          <Reveal className="page-hero-inner">
+            <span className="eyebrow">The Korven collection</span>
+            <h1 className="h1">
+              Tools for a <span className="gradient-text">better</span> day at your desk.
             </h1>
-
-            <p>
-              Discover thoughtfully designed applications built to make your
-              everyday digital life simpler.
+            <p className="lead">
+              Each app is designed for Windows, does one job very well, and respects your privacy.
             </p>
+          </Reveal>
+        </div>
+      </section>
 
-            <div className="apps-hero-meta">
-              <span>{applications.length} applications</span>
-              <span className="apps-meta-divider" />
-              <span>Designed for Windows</span>
-            </div>
-          </motion.div>
-        </section>
-
-        <section className="apps-catalog">
-          <div className="apps-catalog-heading">
-            <div>
-              <span className="section-eyebrow">EXPLORE OUR SOFTWARE</span>
-              <h2>All applications</h2>
-              <p>Discover what's available and what's coming next.</p>
-            </div>
-
-            <span className="apps-count">
-              {String(applications.length).padStart(2, "0")} PRODUCTS
-            </span>
-          </div>
-
-          <div className="apps-catalog-grid">
-            {applications.map((app, index) => (
-              <motion.div
-                key={app.slug}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.12 }}
-              >
+      <section className="section" style={{ paddingTop: 24 }}>
+        <div className="container">
+          <div className="grid-2">
+            {apps.map((app, i) => (
+              <Reveal key={app.slug} delay={i * 0.08}>
                 <AppCard app={app} />
-              </motion.div>
+              </Reveal>
             ))}
           </div>
 
-          <div className="apps-coming-note">
-            <div className="apps-coming-icon">
-              <Sparkles size={19} />
+          <Reveal delay={0.1}>
+            <div className="card apps-next">
+              <span className="icon-tile">
+                <Sparkles size={19} />
+              </span>
+              <div>
+                <h3 className="h3">More is on the way.</h3>
+                <p className="body">Have an idea for an app, or a feature you’d love to see? We read every message.</p>
+              </div>
+              <Link to="/support#contact" className="btn btn-secondary">
+                <Mail size={16} />
+                Share an idea
+              </Link>
             </div>
-
-            <div>
-              <h3>Something new is taking shape.</h3>
-              <p>
-                We're working on more software. Keep an eye on Korven for future
-                releases.
-              </p>
-            </div>
-
-            <ArrowUpRight className="apps-coming-arrow" size={19} />
-          </div>
-        </section>
-      </main>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

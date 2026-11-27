@@ -1,51 +1,29 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
-import "./AppCard.css";
+import AppIcon from "./AppIcon";
+import { statusClass, type AppInfo } from "../data/apps";
 
-export interface AppInfo {
-  name: string;
-  slug: string;
-  description: string;
-  category: string;
-  status: "Available" | "In development" | "Coming soon";
-  icon?: string;
-  initials?: string;
-}
-
-interface AppCardProps {
-  app: AppInfo;
-}
-
-export default function AppCard({ app }: AppCardProps) {
+export default function AppCard({ app }: { app: AppInfo }) {
   return (
-    <Link to={`/apps/${app.slug}`} className="app-card">
+    <Link to={`/apps/${app.slug}`} className="card card-hover app-card" aria-label={`${app.name}: ${app.tagline}`}>
       <div className="app-card-top">
-        <div className="app-card-icon">
-          {app.icon ? (
-            <img src={app.icon} alt={`${app.name} icon`} />
-          ) : (
-            <span>{app.initials ?? app.name.slice(0, 1)}</span>
-          )}
-        </div>
-
-        <span className={`app-status ${app.status.toLowerCase().replaceAll(" ", "-")}`}>
-          <span className="app-status-dot" />
+        <AppIcon app={app} size={60} />
+        <span className={`badge ${statusClass(app.status)}`}>
+          <span className="badge-dot" />
           {app.status}
         </span>
       </div>
-
-      <div className="app-card-content">
-        <span className="app-card-category">{app.category}</span>
-        <h3>{app.name}</h3>
-        <p>{app.description}</p>
+      <h3 className="h3">{app.name}</h3>
+      <div className="app-card-meta">
+        <span>{app.category}</span>
+        <span aria-hidden="true">·</span>
+        <span>Windows</span>
       </div>
-
-      <div className="app-card-bottom">
-        <span>Explore application</span>
-        <span className="app-card-arrow">
-          <ArrowUpRight size={17} />
-        </span>
+      <p className="body">{app.tagline}</p>
+      <div className="app-card-foot">
+        <span>Learn more</span>
+        <ArrowUpRight size={18} />
       </div>
     </Link>
   );

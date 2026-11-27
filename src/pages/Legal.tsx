@@ -1,7 +1,10 @@
 
-import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, FileText, Scale } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
+import { Mail, ShieldCheck, FileText, Scale } from "lucide-react";
+
 import SEO from "../components/SEO";
+import Reveal from "../components/Reveal";
+import { CONTACT_EMAIL } from "../data/apps";
 import "./Legal.css";
 
 type LegalSection = {
@@ -47,12 +50,20 @@ const documents: Record<
           "Zapture is a Windows screenshot and screen-recording application. Depending on the features you use, it may process screenshots, screen recordings, system audio, microphone input, files you open or export, and local application preferences.",
           "This information is processed on your device and is not intentionally transmitted to Korven. You choose where exported screenshots and recordings are saved.",
           "Zapture may require operating-system permissions to provide features you choose to use.",
+          "Text recognition (Copy text) runs on your device using the text recognition built into Windows. The image and the text it finds are not sent to Korven.",
+          "Zapture connects to the internet only for the following. These requests reveal your IP address and standard technical request details to the site involved, as with any download. Nothing about your screenshots, recordings, or settings is sent.",
+        ],
+        bullets: [
+          "Update checks: Zapture reads a small version file from GitHub (raw.githubusercontent.com) when update checks are on, and downloads the installer from GitHub when you choose to update. You can turn automatic update checks off in Settings → About.",
+          "FFmpeg setup: when you set up recording, Zapture downloads FFmpeg from gyan.dev or its GitHub mirror, unless you choose a copy you already have.",
         ],
       },
       {
         heading: "4. Website information",
         paragraphs: [
           "Our website is hosted using Cloudflare Pages. When you visit the website, Cloudflare may process technical information needed to deliver, protect, and maintain the service.",
+          "To show the latest Zapture version, the Zapture page asks GitHub's public API for the latest release directly from your browser, on Windows PCs only (other devices can't download Zapture, so nothing is asked). GitHub receives your IP address and browser details for that request. If the request fails, the page links to the GitHub releases page instead.",
+          "Our fonts are served from our own website. We do not load fonts, scripts, or other resources from Google or advertising networks.",
         ],
         bullets: [
           "IP address.",
@@ -80,7 +91,8 @@ const documents: Record<
       {
         heading: "7. Cookies and analytics",
         paragraphs: [
-          "We do not intend to use advertising trackers or behavioural advertising on the Korven website. Any analytics, cookies, or similar technologies used by our hosting provider are subject to the provider's configuration and policies.",
+          "The Korven website does not set cookies, does not store anything in your browser, and does not use analytics, advertising, or tracking scripts.",
+          "Cloudflare, as our host, may set a strictly necessary security cookie when it needs to tell people from automated traffic. Under UK and EU law, strictly necessary storage of this kind does not need consent. If we ever add analytics or other non-essential technologies, we will update this policy first and ask for consent where the law requires it.",
         ],
       },
       {
@@ -99,33 +111,41 @@ const documents: Record<
         ],
       },
       {
-        heading: "10. Your UK data protection rights",
+        heading: "10. Who is responsible and our lawful bases",
         paragraphs: [
-          "Depending on the circumstances, UK data protection law may give you rights to access, correct, erase, restrict, or object to the processing of your personal information, and to request data portability.",
-          "To exercise a right or raise a privacy concern, contact contact.sightie@gmail.com.",
-          "You may also complain to the Information Commissioner's Office at https://ico.org.uk.",
+          "Korven (the individual developer named in section 1) is the controller for the personal information described in this policy that Korven itself handles: support emails and any website information made available to us. Cloudflare and GitHub are responsible for the information they process under their own policies.",
+          "We rely on legitimate interests to deliver, secure, and maintain the website and to answer messages you send us, and on legal obligation where we must keep or disclose information by law.",
         ],
       },
       {
-        heading: "11. Children's privacy",
+        heading: "11. Your data protection rights and complaints",
+        paragraphs: [
+          "Depending on the circumstances, UK and EU data protection law may give you rights to access, correct, erase, restrict, or object to the processing of your personal information, and to request data portability.",
+          "To exercise a right, or to complain about how we have handled your personal information, email contact.sightie@gmail.com with the subject \"Data protection\". Tell us what happened and what you would like us to do.",
+          "We will acknowledge your complaint within 30 days of receiving it, look into it without undue delay, keep you informed of progress, and tell you the outcome.",
+          "You also have the right to complain to the Information Commissioner's Office (ICO) at https://ico.org.uk/make-a-complaint/ or on 0303 123 1113. If you live in the European Economic Area, you can complain to your local data protection authority.",
+        ],
+      },
+      {
+        heading: "12. Children's privacy",
         paragraphs: [
           "Korven software is not specifically designed to collect personal information from children. We do not knowingly collect personal information from children through a Korven account system.",
         ],
       },
       {
-        heading: "12. International processing",
+        heading: "13. International processing",
         paragraphs: [
           "Cloudflare and GitHub may process technical information in countries outside the United Kingdom. Their own policies explain how they handle international data transfers. Where UK law requires safeguards, those safeguards should be provided by the relevant service provider.",
         ],
       },
       {
-        heading: "13. Changes to this policy",
+        heading: "14. Changes to this policy",
         paragraphs: [
           "We may update this Privacy Policy when our software, website, service providers, or data practices change. The latest version will be published on the Korven website.",
         ],
       },
       {
-        heading: "14. Contact",
+        heading: "15. Contact",
         paragraphs: [
           "For privacy questions or requests, email contact.sightie@gmail.com.",
           "Korven is operated by an individual developer in the United Kingdom.",
@@ -135,14 +155,14 @@ const documents: Record<
   },
 
   terms: {
-    title: "Terms of Use",
+    title: "Terms of Service",
     description: "The terms governing access to and use of the Korven website and software.",
     icon: FileText,
     sections: [
       {
         heading: "1. Introduction",
         paragraphs: [
-          "These Terms of Use govern your access to and use of the Korven website and software.",
+          "These Terms of Service govern your access to and use of the Korven website and software.",
           "Korven is an independent software developer and publisher operating from the United Kingdom.",
           "By accessing the website or downloading or using Korven software, you agree to these Terms. If you do not agree, do not use the relevant service or software.",
         ],
@@ -313,6 +333,7 @@ const documents: Record<
         paragraphs: [
           "Zapture is a Windows screenshot and screen-recording application. Depending on the release, it may provide screen and window capture, screenshot editing, screen recording, system audio and microphone recording, and local file export.",
           "You are responsible for ensuring that your use of capture and recording features complies with applicable law and respects the privacy and rights of others.",
+          "Recording calls, meetings, or other people's voices or images can be unlawful without their consent. Some places, including several US states, require the consent of everyone taking part. Tell people before you record them, and get their consent where the law requires it.",
           "Zapture is designed to process user-created screenshots and recordings locally. It does not intentionally upload this content to Korven.",
           "Textura is a planned notes application. Its features and licence terms may be further specified when it becomes available.",
         ],
@@ -335,7 +356,8 @@ const documents: Record<
       {
         heading: "8. Third-party components",
         paragraphs: [
-          "The Software may include third-party libraries or components. Those components may be governed by their own open-source licences or third-party terms. Where a separate licence applies, it governs the relevant component.",
+          "The Software includes open-source libraries used under their own licences (MIT, Apache-2.0 and similar). Settings → About → Open-source licences in the Software lists them. Where a separate licence applies, it governs the relevant component, and nothing in this Agreement limits your rights under it.",
+          "FFmpeg is not part of the Software. When you set up recording, the Software downloads a separate FFmpeg build published by gyan.dev (licensed under the GNU General Public License version 3), or uses a copy you choose, and runs it as a separate program. FFmpeg is provided under its own licence, not this Agreement; its source code is available from https://ffmpeg.org.",
         ],
       },
       {
@@ -393,80 +415,120 @@ const documents: Record<
   },
 };
 
+const UPDATED = "23 November 2026";
+
+function anchor(heading: string) {
+  return heading
+    .toLowerCase()
+    .replace(/^\d+\.\s*/, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** Turns web and email addresses in legal text into links. */
+function linkify(text: string) {
+  return text.split(/(https?:\/\/[^\s,;]+[^\s,;.)]|[\w.+-]+@[\w-]+\.[\w.]+[\w])/g).map((part, i) => {
+    if (/^https?:\/\//.test(part))
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer">
+          {part}
+        </a>
+      );
+    if (/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(part))
+      return (
+        <a key={i} href={`mailto:${part}`}>
+          {part}
+        </a>
+      );
+    return part;
+  });
+}
+
+const tabs = [
+  { to: "/privacy", label: "Privacy Policy" },
+  { to: "/terms", label: "Terms of Service" },
+  { to: "/eula", label: "EULA" },
+];
+
 export default function Legal() {
-  const location = useLocation();
-  const slug = location.pathname.replace("/", "");
-  const document = documents[slug] ?? documents.privacy;
-  const Icon = document.icon;
+  const { pathname } = useLocation();
+  const slug = pathname.replace(/^\//, "").replace(/\/$/, "");
+  const doc = documents[slug] ?? documents.privacy;
+  const Icon = doc.icon;
 
   return (
     <>
-      <SEO
-        title={document.title}
-        description={document.description}
-        path={`/${slug}`}
-      />
+      <SEO title={doc.title} description={doc.description} path={`/${slug}`} />
 
-      <div className="legal-page">
-        <div className="legal-container">
-          <Link to="/" className="legal-back">
-            <ArrowLeft size={15} />
-            Back to home
-          </Link>
+      <section className="page-hero legal-hero">
+        <div className="grid-bg" />
+        <div className="container">
+          <Reveal className="page-hero-inner">
+            <span className="eyebrow">
+              <Icon size={14} />
+              Legal
+            </span>
+            <h1 className="h1">{doc.title}</h1>
+            <p className="lead">{doc.description}</p>
+            <p className="small legal-dates">
+              Effective {UPDATED} · Last updated {UPDATED}
+            </p>
+          </Reveal>
+          <nav className="legal-tabs" aria-label="Legal documents">
+            {tabs.map((t) => (
+              <NavLink key={t.to} to={t.to} className={({ isActive }) => (isActive ? "is-active" : "")}>
+                {t.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+      </section>
 
-          <header className="legal-header">
-            <div className="legal-icon">
-              <Icon size={23} />
-            </div>
+      <section className="section legal-body">
+        <div className="container legal-layout">
+          <aside className="legal-toc" aria-label="On this page">
+            <p className="legal-toc-title">On this page</p>
+            <ol>
+              {doc.sections.map((s) => (
+                <li key={s.heading}>
+                  <a href={`#${anchor(s.heading)}`}>{s.heading.replace(/^\d+\.\s*/, "")}</a>
+                </li>
+              ))}
+            </ol>
+          </aside>
 
-            <span className="legal-eyebrow">KORVEN / LEGAL</span>
-            <h1>{document.title}</h1>
-            <p>{document.description}</p>
-
-            <div className="legal-updated">
-              Effective date: 22 November 2026
-              <span />
-              Last updated: 22 November 2026
-            </div>
-          </header>
-
-          <div className="legal-content">
-            {document.sections.map((section) => (
-              <section className="legal-section" key={section.heading}>
-                <h2>{section.heading}</h2>
-
-                {section.paragraphs.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
+          <article className="legal-content">
+            {doc.sections.map((s) => (
+              <section key={s.heading} id={anchor(s.heading)} className="legal-section">
+                <h2>{s.heading}</h2>
+                {s.paragraphs.map((p, i) => (
+                  <p key={i}>{linkify(p)}</p>
                 ))}
-
-                {section.bullets && (
+                {s.bullets && (
                   <ul>
-                    {section.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
+                    {s.bullets.map((b) => (
+                      <li key={b}>{linkify(b)}</li>
                     ))}
                   </ul>
                 )}
               </section>
             ))}
-          </div>
 
-          <div className="legal-contact">
-            <h2>Questions about this document?</h2>
-            <p>
-              Contact us if you need clarification or have a legal enquiry.
-            </p>
-            <a href="mailto:contact.sightie@gmail.com">
-              Contact Korven <ArrowLeft size={14} />
-            </a>
-          </div>
-
-          <nav className="legal-other" aria-label="Other legal documents">
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Use</Link>
-            <Link to="/eula">EULA</Link>
-          </nav>
+            <div className="card legal-contact">
+              <span className="icon-tile">
+                <Mail size={19} />
+              </span>
+              <div>
+                <h2 className="h3">Questions about this document?</h2>
+                <p className="body">Contact us if anything is unclear or you have a legal or privacy enquiry.</p>
+              </div>
+              <a className="btn btn-secondary" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(doc.title)}`}>
+                Contact Korven
+              </a>
+            </div>
+          </article>
         </div>
-      </div>
+      </section>
     </>
   );
 }

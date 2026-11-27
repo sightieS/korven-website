@@ -1,174 +1,155 @@
-
-import { motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  Heart,
-  Lightbulb,
-  Target,
-  Sparkles,
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Gauge, Heart, Lightbulb, MapPin, Monitor, ShieldCheck, Target, User } from "lucide-react";
 
 import SEO from "../components/SEO";
+import Reveal from "../components/Reveal";
 import "./About.css";
 
 const principles = [
   {
     icon: Lightbulb,
-    title: "Purposeful innovation",
-    description:
-      "We believe technology should solve problems, improve experiences and make everyday tasks easier.",
+    title: "Purposeful",
+    description: "Every feature has to solve a real problem. If it doesn’t make your day easier, it doesn’t ship.",
   },
   {
     icon: Heart,
-    title: "Designed with care",
-    description:
-      "From the smallest interaction to the overall experience, every detail deserves attention.",
+    title: "Crafted",
+    description: "From the first launch to the smallest sound, every detail deserves attention.",
   },
   {
     icon: Target,
-    title: "Quality over quantity",
-    description:
-      "We focus on building software that feels complete, reliable and genuinely useful.",
+    title: "Focused",
+    description: "Fewer, better apps. We’d rather finish one thing properly than start ten.",
   },
+  {
+    icon: ShieldCheck,
+    title: "Respectful",
+    description: "No accounts, no tracking and no dark patterns. Your work belongs to you.",
+  },
+  {
+    icon: Gauge,
+    title: "Fast",
+    description: "Native code, quick startup and low overhead, so apps never slow you down.",
+  },
+  {
+    icon: Monitor,
+    title: "Windows first",
+    description: "Designed for Windows 10 and 11, following the platform rather than fighting it.",
+  },
+];
+
+const facts = [
+  { icon: User, label: "Independent", value: "Built by one developer" },
+  { icon: MapPin, label: "Based in", value: "United Kingdom" },
+  { icon: Monitor, label: "Platform", value: "Windows 10 & 11" },
 ];
 
 export default function About() {
   return (
     <>
       <SEO
-        title="About Us"
-        description="Discover Korven, an independent software brand focused on purposeful innovation, thoughtful design and creating better software experiences."
+        title="About"
+        description="Korven is an independent UK software studio making fast, private and thoughtfully designed apps for Windows."
         path="/about"
       />
 
-      <main className="about-page">
-        <section className="about-hero">
-          <div className="about-hero-glow" />
-
-          <motion.div
-            className="about-hero-content"
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <span className="section-eyebrow">GET TO KNOW US</span>
-
-            <h1>
-              More than software.
+      <section className="page-hero">
+        <div className="grid-bg" />
+        <div className="glow" />
+        <div className="container">
+          <Reveal className="page-hero-inner">
+            <span className="eyebrow">About Korven</span>
+            <h1 className="h1">
+              Small studio.
               <br />
-              <span>A better way forward.</span>
+              <span className="gradient-text">High standards.</span>
             </h1>
-
-            <p>
-              Korven is an independent software brand focused on creating
-              thoughtfully designed applications for everyday life.
+            <p className="lead">
+              Korven is an independent software studio making Windows apps that feel calm, fast and genuinely useful.
             </p>
+          </Reveal>
 
-            <div className="about-hero-brand">
-              <img src="/korven-icon.webp" alt="Korven logo" />
-              <span>Independent by design.</span>
-            </div>
-          </motion.div>
-        </section>
+          <Reveal delay={0.1}>
+            <dl className="about-facts">
+              {facts.map((f) => (
+                <div key={f.label} className="card">
+                  <f.icon size={18} />
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
 
-        <section className="about-story">
-          <div className="about-story-heading">
-            <span className="section-eyebrow">OUR APPROACH</span>
-            <h2>
-              Technology should feel
-              <br />
-              <span>effortless.</span>
-            </h2>
-          </div>
-
-          <div className="about-story-copy">
-            <p>
-              Software is part of almost everything we do. Yet the tools we use
-              every day can often feel complicated, cluttered or unnecessarily
-              difficult.
+      <section className="section section-divider">
+        <div className="container about-story">
+          <Reveal>
+            <span className="eyebrow">Our story</span>
+            <h2 className="h2">Technology should feel effortless.</h2>
+          </Reveal>
+          <Reveal delay={0.08} className="about-story-copy">
+            <p className="lead">
+              Software is part of almost everything we do, yet the tools we use every day often feel cluttered, slow or
+              harder than they need to be.
             </p>
-
-            <p>
-              Korven exists to explore a different approach: creating
-              applications that combine thoughtful functionality with
-              considered design.
+            <p className="body">
+              Korven exists to take a different approach: small, focused applications that combine solid engineering with
+              considered design. Zapture, our first app, is built around a simple goal: capturing your own screen
+              should take one shortcut, not five steps.
             </p>
-
-            <p>
-              We're building a growing collection of software, with each
-              application shaped around a simple idea: make the experience
-              better.
+            <p className="body">
+              Each new app is shaped around the same idea. Make the experience better, keep it private, and sweat the details
+              most people never notice but everyone feels.
             </p>
-          </div>
-        </section>
+          </Reveal>
+        </div>
+      </section>
 
-        <section className="about-principles">
-          <div className="about-section-heading">
-            <span className="section-eyebrow">WHAT GUIDES US</span>
-            <h2>Our principles.</h2>
-            <p>The ideas behind everything we create.</p>
-          </div>
-
-          <div className="about-principles-grid">
-            {principles.map((principle, index) => {
-              const Icon = principle.icon;
-
-              return (
-                <motion.article
-                  className="about-principle-card"
-                  key={principle.title}
-                  initial={{ opacity: 0, y: 22 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                >
-                  <div className="about-principle-icon">
-                    <Icon size={21} />
-                  </div>
-
-                  <span className="about-principle-number">
-                    0{index + 1}
+      <section className="section section-divider">
+        <div className="container">
+          <Reveal className="section-head">
+            <span className="eyebrow">What guides us</span>
+            <h2 className="h2">Our principles.</h2>
+          </Reveal>
+          <div className="feature-grid">
+            {principles.map((p, i) => (
+              <Reveal key={p.title} delay={(i % 3) * 0.06}>
+                <div className="card feature">
+                  <span className="icon-tile">
+                    <p.icon size={20} />
                   </span>
-
-                  <h3>{principle.title}</h3>
-                  <p>{principle.description}</p>
-                </motion.article>
-              );
-            })}
+                  <h3 className="h3">{p.title}</h3>
+                  <p className="body">{p.description}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="about-vision">
-          <div className="about-vision-glow" />
-
-          <div className="about-vision-content">
-            <Sparkles size={22} />
-
-            <span className="section-eyebrow">LOOKING AHEAD</span>
-
-            <h2>
-              We're just
-              <br />
-              <span>getting started.</span>
-            </h2>
-
-            <p>
-              Korven is a growing project with plenty of ideas ahead. We're
-              focused on developing useful applications and continually
-              improving the experiences we create.
-            </p>
-
-            <a href="/apps" className="about-vision-link">
-              Explore our applications
-              <ArrowUpRight size={16} />
-            </a>
-          </div>
-
-          <div className="about-vision-logo">
-            <img src="/korven-icon.png" alt="" />
-          </div>
-        </section>
-      </main>
+      <section className="section-tight">
+        <div className="container">
+          <Reveal>
+            <div className="cta-band">
+              <div>
+                <h2 className="h2">We’re just getting started.</h2>
+                <p className="lead">See what we’ve made so far, or tell us what you’d like to see next.</p>
+              </div>
+              <div className="cta-band-actions">
+                <Link to="/apps" className="btn btn-primary btn-lg">
+                  Explore apps
+                  <ArrowRight size={16} />
+                </Link>
+                <Link to="/support#contact" className="btn btn-secondary btn-lg">
+                  Contact us
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

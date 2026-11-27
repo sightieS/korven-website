@@ -1,5 +1,4 @@
-
 User-agent: *
 Allow: /
 
-Sitemap: https://korven.pages.dev/sitemap.xml
+Sitemap: https://korven-28n.pages.dev/sitemap.xml
